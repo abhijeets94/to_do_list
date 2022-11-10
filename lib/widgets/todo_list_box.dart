@@ -1,11 +1,24 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:to_do_list/models/todo_model.dart';
+
 import 'package:to_do_list/screens/notes.dart';
+import 'package:to_do_list/services/todo_services.dart';
 
 class TodoList extends StatefulWidget {
-  const TodoList({Key? key}) : super(key: key);
+  final TodoModel? todo;
+  // final String? description;
+  final int? index;
+
+  TodoList({
+    Key? key,
+    required this.todo,
+    // required this.description,
+    this.index,
+  }) : super(key: key);
 
   @override
   State<TodoList> createState() => _TodoListState();
@@ -13,6 +26,8 @@ class TodoList extends StatefulWidget {
 
 class _TodoListState extends State<TodoList> {
   bool value = false;
+  TodoServices todoServices = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,28 +37,15 @@ class _TodoListState extends State<TodoList> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: Colors.black)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Checkbox(
-              value: this.value,
-              onChanged: (bool? value) {
-                setState(
-                  () {
-                    this.value = value!;
-                  },
-                );
-              },
-            ),
+      child: Center(
+        child: Text(
+          widget.todo!.todo.toString(),
+          style: TextStyle(
+            decoration: todoServices.todo[widget.index!].status
+                ? TextDecoration.lineThrough
+                : TextDecoration.none,
           ),
-          const Text("THIS IS NOTE "),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.delete_outline_outlined),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:to_do_list/screens/homepage.dart';
+import 'package:to_do_list/services/todo_services.dart';
 
 class Notes extends StatefulWidget {
   static const routeName = "/notes";
@@ -13,7 +15,12 @@ class Notes extends StatefulWidget {
 }
 
 class _NotesState extends State<Notes> {
-  final index = Get.arguments['index'];
+  TodoServices todoServices = TodoServices();
+
+  final id = Get.arguments['id'];
+  final todo = Get.arguments['todo'];
+  final description = Get.arguments['description'];
+  final status = Get.arguments['status'];
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +42,48 @@ class _NotesState extends State<Notes> {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
-          child: Text(
-            "This is the notes = $index",
+          child: Column(
+            children: [
+              Text(
+                todo,
+                style: const TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Divider(
+                height: 10,
+                color: Colors.red,
+              ),
+              Text(
+                description,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      todoServices.done(
+                        context: context,
+                        id: id,
+                        status: !status,
+                      );
+                      Get.offAllNamed(HomePage.routeName);
+                    },
+                    child: Text(
+                      status ? " Done " : "Undo",
+                    ),
+                  ),
+                  ElevatedButton(onPressed: () {}, child: const Text("Edit")),
+                  ElevatedButton(onPressed: () {}, child: const Text("Delete")),
+                ],
+              )
+            ],
           ),
         ),
       ),

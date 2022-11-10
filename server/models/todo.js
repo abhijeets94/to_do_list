@@ -10,8 +10,13 @@ const todoSchema = mongoose.Schema({
         required: true,
     },
     dueDate: {
-        type: Number,
+        type: String,
         
+    },
+    status: {
+        type: Boolean,
+        default: false,
+        required: true,
     }
 });
 

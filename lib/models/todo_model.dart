@@ -4,18 +4,22 @@ import 'dart:convert';
 class TodoModel {
   final String todo;
   final String description;
-  final String dueDate;
+  bool? status;
+  String? id;
+
   TodoModel({
     required this.todo,
     required this.description,
-    required this.dueDate,
+    this.status,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'todo': todo,
       'description': description,
-      'dueDate': dueDate,
+      'status': status,
+      'id': id,
     };
   }
 
@@ -23,7 +27,8 @@ class TodoModel {
     return TodoModel(
       todo: map['todo'] as String,
       description: map['description'] as String,
-      dueDate: map['dueDate'] as String,
+      status: map['status'] != null ? map['status'] as bool : null,
+      id: map['_id'] != null ? map['_id'] as String : null,
     );
   }
 
